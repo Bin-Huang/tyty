@@ -1,6 +1,6 @@
 {
   "name": "tyty",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "description": "A cli tool to get all of `@types/*` for your project dependencies",
   "main": "./bin/tyty.js",
   "scripts": {

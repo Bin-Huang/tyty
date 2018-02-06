@@ -1,5 +1,7 @@
 一键下载所有依赖的类型声明文件（`@types/*`）！使用`tyty`，优雅地和`typescript`相处。
 
+![](https://raw.githubusercontent.com/Bin-Huang/tyty/master/image/example.PNG)
+
 ```
 npm i tyty -g
 ```
