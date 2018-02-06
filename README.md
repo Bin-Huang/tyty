@@ -1,15 +1,18 @@
-一键下载所有依赖的类型声明文件（`@types/*`）！使用`tyty`，优雅地和`typescript`相处。
+:star2: A cli tool to get all of `@types/*` for your project dependencies. Happier with `typescript` :heart:
 
 ![](https://raw.githubusercontent.com/Bin-Huang/tyty/master/image/example.PNG)
 
 ```
+
 npm i tyty -g
+
 ```
 
-# 如何使用
-在项目路径输入 `tyty`，将自动根据 package.json 为你的项目依赖下载typescript类型依赖（@types/*）。
+# How To Use
 
-如果当前路径下没有 package.json，则会自动前往上一级目录寻找，不断重复。
+Just open command line in your project, and press `tyty` + enter. All type declarations(`@types/*`) you need will be downloaded base on package.json.
+
+If the package.json is no existed in current folder, `tyty` will try to find it in superior folder and repeats(if is no existed too)
 
 ```
   Usage: tyty [options]
@@ -22,13 +25,12 @@ npm i tyty -g
     -h, --help      output usage information
 ```
 
-# 如何贡献
-- 翻译这篇文档
-- 向朋友们、同事们推荐这个工具
-- 任何问题、bug、建议，欢迎提出issus
-- 欢迎 fork 及 pull request
+# Contributes
+- welcome `issuse` when have any question, bug, suggestion...
+- welcome `fork` and `Pull Request`
+- share the tool with friends and colleagues
 
-# todo-list
-- 如果类型声明已经存在，则跳过下载
-- 添加 yarn 选项（可以选择使用 yarn 下载类型依赖）
-- 添加 cnpm 选项（可以选择使用 cnpm 下载类型依赖）
+# Todo-list
+- skip  when already exists type declaration in node_modules and package.json dependencies;
+- add `-y, --yarn` option. (use `yarn` instead of `npm` to download)
+- add `-c, --cnpm` option. (use `cnpm` instead of `npm` to download)
