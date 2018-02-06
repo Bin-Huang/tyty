@@ -3,9 +3,7 @@
 ![](https://raw.githubusercontent.com/Bin-Huang/tyty/master/image/example.PNG)
 
 ```
-
 npm i tyty -g
-
 ```
 
 # How To Use
