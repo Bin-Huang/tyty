@@ -1,0 +1,37 @@
+{
+  "name": "tyty",
+  "version": "1.0.0",
+  "description": "A cli tool to get all of `@types/*` for your project dependencies",
+  "main": "./bin/tyty.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "tyty": "./bin/tyty.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bin-Huang/tyty.git"
+  },
+  "keywords": [
+    "types",
+    "typescript",
+    "cli",
+    "tool"
+  ],
+  "author": "Ben (tohuangbin@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bin-Huang/tyty/issues"
+  },
+  "homepage": "https://github.com/Bin-Huang/tyty#readme",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "commander": "^2.14.0",
+    "execa": "^0.9.0",
+    "fs-extra": "^5.0.0",
+    "p-map": "^1.2.0"
+  },
+  "devDependencies": {
+  }
+}
