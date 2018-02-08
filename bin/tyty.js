@@ -8,7 +8,7 @@ const { npm, npmDev } = require("../install");
 const findPackageJson = require("../find");
  
 program
-  .version("1.0.1")
+  .version("1.0.2")
   .option("-s, --save", "(default) add type declaration as a dependency")
   .option("-d, --save-dev", "add type declaration as a dev-dependency")
   .parse(process.argv);
