@@ -18,8 +18,8 @@ If the package.json is no existed in current folder, `tyty` will try to find it 
   Options:
 
     -V, --version   output the version number
-    -s, --save      (default) add type declaration as a dependency
-    -d, --save-dev  add type declaration as a dev-dependency
+    -s, --save      add type declaration as a dependency
+    -d, --save-dev  (default) add type declaration as a dev-dependency
     -h, --help      output usage information
 ```
 
@@ -29,6 +29,6 @@ If the package.json is no existed in current folder, `tyty` will try to find it 
 - share the tool with friends and colleagues
 
 # Todo-list
-- skip  when already exists type declaration in node_modules and package.json dependencies;
+- skip when already exists type declaration in node_modules and package.json dependencies;
 - add `-y, --yarn` option. (use `yarn` instead of `npm` to download)
 - add `-c, --cnpm` option. (use `cnpm` instead of `npm` to download)
