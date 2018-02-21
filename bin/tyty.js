@@ -33,7 +33,7 @@ async function action(install) {
     const types = pkgs.map((pkg) => `@types/${pkg}`);
 
     console.log(`
-        ${blue("start to download")} ${yellow(types.length)} ${blue("modules type declarations")} ...
+        ${blue("start to download")} ${yellow(types.length)} ${blue("modules type definitions")} ...
     `);
 
     await install(types);
