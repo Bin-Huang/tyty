@@ -9,8 +9,8 @@ const findPackageJson = require("../find");
 
 program
   .version("1.0.5")
-  .option("-s, --save", "download and add type definitions to package.json as a dependency")
-  .option("-d, --save-dev", "(default) download and add type definitions to package.json as a dev-dependency")
+  .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
+  .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
   .parse(process.argv);
 
 if (program.saveDev) {
@@ -33,7 +33,7 @@ async function action(install) {
     const types = pkgs.map((pkg) => `@types/${pkg}`);
 
     console.log(`
-        ${blue("start to download")} ${yellow(types.length)} ${blue("modules type definitions")} ...
+        ${blue("start to get")} ${yellow(types.length)} ${blue("typescript definitions")} ...
     `);
 
     await install(types);
