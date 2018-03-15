@@ -29,6 +29,7 @@ async function action(install) {
     const package = await fs.readJSON(configPath);
     const dependencies = package["dependencies"] || {};
     // const devDependencies = package["devDependencies"] || {};
+
     const pkgs = Object.keys(dependencies).filter((pkg) => ! pkg.startsWith("@types/"))
     const types = pkgs.map((pkg) => `@types/${pkg}`);
 

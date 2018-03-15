@@ -1,6 +1,6 @@
 {
   "name": "tyty",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": ":star2: A cli tool to get all of `@types/*` for your project dependencies. Happier with `typescript` :heart:",
   "main": "./bin/tyty.js",
   "scripts": {
@@ -32,5 +32,6 @@
     "fs-extra": "^5.0.0",
     "p-map": "^1.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+  }
 }
