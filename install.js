@@ -7,7 +7,7 @@ async function npm(types) {
         .then(() => showResult(type, "to add as a dependency (using npm)", true))
         .catch(() => showResult(type, "to find in npm registry (using npm)", false))
 
-    await pMap(types, download, { concurrency: 3 });
+    await pMap(types, download, { concurrency: 1 });
 }
 
 async function npmDev(types) {
@@ -15,7 +15,7 @@ async function npmDev(types) {
         .then(() => showResult(type, "to add as a dev-dependency (using npm)", true))
         .catch(() => showResult(type, "to find in npm registry (using npm)", false))
 
-    await pMap(types, download, { concurrency: 3 });
+    await pMap(types, download, { concurrency: 1 });
 }
 
 async function npmAll(types) {
