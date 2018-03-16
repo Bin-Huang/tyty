@@ -8,7 +8,7 @@ const { npm, npmDev } = require("../install");
 const findPackageJson = require("../find");
 
 program
-  .version("1.0.5")
+  .version("1.1.0")
   .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
   .parse(process.argv);
