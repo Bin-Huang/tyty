@@ -4,16 +4,16 @@ const chalk = require('chalk');
 
 async function npm(types) {
     const download = (type) => execAsync(`npm install ${type} --save`)
-        .then(() => showResult(type, "add as a dependency (using npm)", true))
-        .catch(() => showResult(type, "find in npm registry (using npm)", false))
+        .then(() => showResult(type, "to add as a dependency (using npm)", true))
+        .catch(() => showResult(type, "to find in npm registry (using npm)", false))
 
     await pMap(types, download, { concurrency: 4 });
 }
 
 async function npmDev(types) {
     const download = (type) => execAsync(`npm install ${type} --save-dev`)
-        .then(() => showResult(type, "add as a dev-dependency (using npm)", true))
-        .catch(() => showResult(type, "find in npm registry (using npm)", false))
+        .then(() => showResult(type, "to add as a dev-dependency (using npm)", true))
+        .catch(() => showResult(type, "to find in npm registry (using npm)", false))
 
     await pMap(types, download, { concurrency: 4 });
 }
