@@ -18,8 +18,8 @@ If package.json not in current folder, `tyty` will try to find it in superior fo
   Options:
 
     -V, --version   output the version number
-    -s, --save      download and add type definitions to package.json as dependency
-    -d, --save-dev  (default) download and add type definitions to package.json as dev-dependency
+    -s, --save      get typescript definitions and add to package.json as a dependency
+    -d, --save-dev  (default) get typescript definitions and add to package.json as a dev-dependency
     -h, --help      output usage information
 ```
 

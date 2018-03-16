@@ -3,11 +3,12 @@ const path = require("path");
 
 function findPackageJson() {
     let configPath = "./package.json";
+    let i = 0;
     while (! fs.existsSync(configPath)) {
-        const absolutePath = path.resolve(process.cwd(), configPath);
-        if (path.dirname(absolutePath) === "/") {
-            throw new Error("can not find package.json !!")
-            break;
+        i ++;
+        if (i > 10000) {
+          throw new Error('can not find package.json!');
+          break;
         }
         configPath = "../" + configPath;
     }
