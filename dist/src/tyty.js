@@ -18,7 +18,7 @@ const isExist_1 = require("./isExist");
 const ora = require("ora");
 const install_1 = require("./install");
 program
-    .version("1.1.2")
+    .version("2.0.0")
     .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
     .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
     .parse(process.argv);
