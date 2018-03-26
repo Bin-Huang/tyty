@@ -11,7 +11,7 @@ import * as ora from 'ora'
 import { npm, npmDev } from "./install";
 
 program
-  .version("2.1.0")
+  .version("2.2.0")
   .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
   .parse(process.argv);
@@ -54,6 +54,7 @@ async function action(install: IInstall, as: "dependencies" | "devDependencies" 
         } else {
           spinner.text = gray(`can not find ${t} in npm registry`)
         }
+        return r
       })
       , {concurrency: 10});
 
@@ -61,11 +62,7 @@ async function action(install: IInstall, as: "dependencies" | "devDependencies" 
     const unexistTypes = types.filter((t, ix) => ! checkExistResults[ix])
 
     spinner.text = 'downloading ...'
-    try {
-      await install(existTypes);
-    } catch (e) {
-      // TODO: 
-    }
+    await install(existTypes);
     // console.log(`\n\n${blue("Result")}:\n`)
     getResults(existTypes, true, as).map((r) => spinner.succeed(r))
     getResults(unexistTypes, false, as).map((r) => spinner.fail(r))
