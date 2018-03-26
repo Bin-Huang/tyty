@@ -18,7 +18,7 @@ const isExist_1 = require("./isExist");
 const ora = require("ora");
 const install_1 = require("./install");
 program
-    .version("2.2.0")
+    .version("2.3.0")
     .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
     .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
     .parse(process.argv);
@@ -60,11 +60,11 @@ function action(install, as) {
         }), { concurrency: 10 });
         const existTypes = types.filter((t, ix) => checkExistResults[ix]);
         const unexistTypes = types.filter((t, ix) => !checkExistResults[ix]);
-        spinner.text = 'downloading ...';
+        spinner.text = `downloading ${types.length} typescript definitions ...`;
         yield install(existTypes);
         // console.log(`\n\n${blue("Result")}:\n`)
-        getResults(existTypes, true, as).map((r) => spinner.succeed(r));
         getResults(unexistTypes, false, as).map((r) => spinner.fail(r));
+        getResults(existTypes, true, as).map((r) => spinner.succeed(r));
         spinner.stop();
     });
 }
