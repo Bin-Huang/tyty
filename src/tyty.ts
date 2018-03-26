@@ -11,7 +11,7 @@ import * as ora from 'ora'
 import { npm, npmDev } from "./install";
 
 program
-  .version("2.0.0")
+  .version("2.1.0")
   .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
   .parse(process.argv);
@@ -48,9 +48,14 @@ async function action(install: IInstall, as: "dependencies" | "devDependencies" 
     spinner.text = `${blue("start to get")} ${yellow(types.length.toString())} ${blue("typescript definitions")} ...`
 
     const checkExistResults = await pMap(types, (t) => isExist(t)
-      .then(() => spinner.text = gray(`succeed to find ${t} in npm registry`))
-      .catch(() => spinner.text = gray(`can not find ${t} in npm registry`)),
-      {concurrency: 10});
+      .then((r) => {
+        if (r) {
+          spinner.text = gray(`succeed to find ${t} in npm registry`)
+        } else {
+          spinner.text = gray(`can not find ${t} in npm registry`)
+        }
+      })
+      , {concurrency: 10});
 
     const existTypes = types.filter((t, ix) => checkExistResults[ix])
     const unexistTypes = types.filter((t, ix) => ! checkExistResults[ix])
