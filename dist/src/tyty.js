@@ -18,7 +18,7 @@ const isExist_1 = require("./isExist");
 const ora = require("ora");
 const install_1 = require("./install");
 program
-    .version("2.3.0")
+    .version("2.4.0")
     .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
     .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
     .parse(process.argv);
@@ -57,7 +57,7 @@ function action(install, as) {
                 spinner.text = gray(`can not find ${t} in npm registry`);
             }
             return r;
-        }), { concurrency: 10 });
+        }), { concurrency: 6 });
         const existTypes = types.filter((t, ix) => checkExistResults[ix]);
         const unexistTypes = types.filter((t, ix) => !checkExistResults[ix]);
         spinner.text = `downloading ${types.length} typescript definitions ...`;

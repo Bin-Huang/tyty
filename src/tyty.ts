@@ -11,7 +11,7 @@ import * as ora from 'ora'
 import { npm, npmDev } from "./install";
 
 program
-  .version("2.3.0")
+  .version("2.4.0")
   .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
   .parse(process.argv);
@@ -56,7 +56,7 @@ async function action(install: IInstall, as: "dependencies" | "devDependencies" 
         }
         return r
       })
-      , {concurrency: 10});
+      , {concurrency: 6});
 
     const existTypes = types.filter((t, ix) => checkExistResults[ix])
     const unexistTypes = types.filter((t, ix) => ! checkExistResults[ix])
