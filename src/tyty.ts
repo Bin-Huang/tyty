@@ -8,20 +8,20 @@ import * as program from 'commander'
 import findPackageJson from './find'
 import getVersion from './getVersion'
 import * as ora from 'ora'
-import { npm, npmDev } from "./install";
+import { npmInstall } from "./install";
 
 program
-  .version("3.0.0")
-  .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
-  .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
+  .version("3.1.0")
+  .option("-s, --save", "get typescript definitions and save as dependency")
+  .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
   .parse(process.argv);
 
 if (program.saveDev) {
-    action("devDependencies").catch(console.log);
+    tyty("devDependencies").catch(console.log);
 } else if (program.save) {
-    action("dependencies").catch(console.log);
+    tyty("dependencies").catch(console.log);
 } else {
-    action("devDependencies").catch(console.log);
+    tyty("devDependencies").catch(console.log);
 }
 
 const blue = chalk.blueBright;
@@ -30,7 +30,7 @@ const green = chalk.green;
 const red = chalk.red;
 const gray = chalk.gray;
 
-async function action(as: "dependencies" | "devDependencies") {
+async function tyty(saveAs: "dependencies" | "devDependencies") {
     const configPath = findPackageJson();
     const config = await fs.readJSON(configPath);
     const dependencies = config["dependencies"] || {};
@@ -39,7 +39,7 @@ async function action(as: "dependencies" | "devDependencies") {
     const allPkgs = Object.keys(dependencies).filter((pkg) => ! pkg.startsWith("@types/"))
     const allTypes = allPkgs.map((pkg) => `@types/${pkg}`);
 
-    const types = allTypes.filter((t) => ! config[as][t])
+    const types = allTypes.filter((t) => ! config[saveAs][t])
 
     const spinner = ora({ spinner: "moon" }).start();
     spinner.text = `${blue("start to get")} ${yellow(allTypes.length.toString())} ${blue("typescript definitions")} ...`
@@ -50,10 +50,9 @@ async function action(as: "dependencies" | "devDependencies") {
       return ;
     }
 
-
     const typeInfos = await pMap(types, async (t) => getVersion(t).then((version) => {
       if (version) {
-        spinner.text = gray(`succeed to find ${t} in npm registry`)
+        spinner.text = gray(`finded ${t} successfully in npm registry`)
       } else {
         spinner.text = gray(`can not find ${t} in npm registry`)
       }
@@ -67,17 +66,17 @@ async function action(as: "dependencies" | "devDependencies") {
     const succeedTypeInfos = typeInfos.filter((info) => info.version !== null);
 
     for (const t of succeedTypeInfos) {
-      config[as][t.name] = t.version;
+      config[saveAs][t.name] = t.version;
     }
 
     await fs.outputJson(configPath, config);
 
     spinner.text = `downloading ${succeedTypeInfos.length} typescript definitions ...`
 
-    await exec("npm", ["install"]);
+    await npmInstall();
 
-    getResults(failedTypeInfos.map((t) => t.name), false, as).map((r) => spinner.fail(r))
-    getResults(succeedTypeInfos.map((t) => t.name), true, as).map((r) => spinner.succeed(r))
+    getResults(failedTypeInfos.map((t) => t.name), false, saveAs).map((r) => spinner.fail(r))
+    getResults(succeedTypeInfos.map((t) => t.name), true, saveAs).map((r) => spinner.succeed(r))
     spinner.stop()
 }
 
@@ -87,14 +86,14 @@ function getResults(existTypes: string[], isSucceed: boolean, saveAs: string|nul
       let msg: string;
       if (isSucceed) {
         if (saveAs === "dependencies") {
-          msg = "downloaded from npm and saved as dependency"
+          msg = "saved as dependency"
         } else if (saveAs === "devDependencies") {
-          msg = "downloaded from npm and saved as devDependency"
+          msg = "saved as devDependency"
         } else {
-          msg = "downloaded from npm and saved"
+          msg = "saved"
         }
       } else {
-        msg = "cannot find it in npm registry";
+        msg = "cannot find in npm registry";
       }
       const nameColor = (isSucceed) ? green : red;
       result.push(`${nameColor(t)} --- ${gray(msg)}`)
