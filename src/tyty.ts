@@ -1,27 +1,27 @@
 #!/usr/bin/env node
-
 import * as fs from 'fs-extra'
 import * as pMap from 'p-map'
+import * as exec from 'execa'
 import * as path from 'path'
 import chalk from 'chalk'
 import * as program from 'commander'
 import findPackageJson from './find'
-import isExist from './isExist'
+import getVersion from './getVersion'
 import * as ora from 'ora'
 import { npm, npmDev } from "./install";
 
 program
-  .version("2.4.0")
+  .version("3.0.0")
   .option("-s, --save", "get typescript definitions and add to package.json as a dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and add to package.json as a dev-dependency")
   .parse(process.argv);
 
 if (program.saveDev) {
-    action(npmDev, "devDependencies").catch(console.log);
+    action("devDependencies").catch(console.log);
 } else if (program.save) {
-    action(npm, "dependencies").catch(console.log);
+    action("dependencies").catch(console.log);
 } else {
-    action(npmDev, "devDependencies").catch(console.log);
+    action("devDependencies").catch(console.log);
 }
 
 const blue = chalk.blueBright;
@@ -30,42 +30,54 @@ const green = chalk.green;
 const red = chalk.red;
 const gray = chalk.gray;
 
-type IInstall = (types: string[]) => Promise<any>
-
-async function action(install: IInstall, as: "dependencies" | "devDependencies" | null) {
+async function action(as: "dependencies" | "devDependencies") {
     const configPath = findPackageJson();
-    const packageJson = await fs.readJSON(configPath);
-    const dependencies = packageJson["dependencies"] || {};
-    // const devDependencies = package["devDependencies"] || {};
+    const config = await fs.readJSON(configPath);
+    const dependencies = config["dependencies"] || {};
+    const devDependencies = config["devDependencies"] || {};
 
-    const pkgs = Object.keys(dependencies).filter((pkg) => ! pkg.startsWith("@types/"))
-    const types = pkgs.map((pkg) => `@types/${pkg}`);
+    const allPkgs = Object.keys(dependencies).filter((pkg) => ! pkg.startsWith("@types/"))
+    const allTypes = allPkgs.map((pkg) => `@types/${pkg}`);
 
-    const spinner = ora({
-      spinner: "moon",
-    }).start();
-    
-    spinner.text = `${blue("start to get")} ${yellow(types.length.toString())} ${blue("typescript definitions")} ...`
+    const types = allTypes.filter((t) => ! config[as][t])
 
-    const checkExistResults = await pMap(types, (t) => isExist(t)
-      .then((r) => {
-        if (r) {
-          spinner.text = gray(`succeed to find ${t} in npm registry`)
-        } else {
-          spinner.text = gray(`can not find ${t} in npm registry`)
-        }
-        return r
-      })
-      , {concurrency: 6});
+    const spinner = ora({ spinner: "moon" }).start();
+    spinner.text = `${blue("start to get")} ${yellow(allTypes.length.toString())} ${blue("typescript definitions")} ...`
 
-    const existTypes = types.filter((t, ix) => checkExistResults[ix])
-    const unexistTypes = types.filter((t, ix) => ! checkExistResults[ix])
+    if (types.length === 0) {
+      spinner.succeed(`${green("already done")}`)
+      spinner.stop();
+      return ;
+    }
 
-    spinner.text = `downloading ${types.length} typescript definitions ...`
-    await install(existTypes);
-    // console.log(`\n\n${blue("Result")}:\n`)
-    getResults(unexistTypes, false, as).map((r) => spinner.fail(r))
-    getResults(existTypes, true, as).map((r) => spinner.succeed(r))
+
+    const typeInfos = await pMap(types, async (t) => getVersion(t).then((version) => {
+      if (version) {
+        spinner.text = gray(`succeed to find ${t} in npm registry`)
+      } else {
+        spinner.text = gray(`can not find ${t} in npm registry`)
+      }
+      return {
+        name: t,
+        version,
+      }
+    }), { concurrency: 6 });
+
+    const failedTypeInfos = typeInfos.filter((info) => info.version === null);
+    const succeedTypeInfos = typeInfos.filter((info) => info.version !== null);
+
+    for (const t of succeedTypeInfos) {
+      config[as][t.name] = t.version;
+    }
+
+    await fs.outputJson(configPath, config);
+
+    spinner.text = `downloading ${succeedTypeInfos.length} typescript definitions ...`
+
+    await exec("npm", ["install"]);
+
+    getResults(failedTypeInfos.map((t) => t.name), false, as).map((r) => spinner.fail(r))
+    getResults(succeedTypeInfos.map((t) => t.name), true, as).map((r) => spinner.succeed(r))
     spinner.stop()
 }
 
