@@ -9,7 +9,6 @@ function findPackageJson() {
         i++;
         if (i > 10000) {
             throw new Error('can not find package.json!');
-            break;
         }
         configPath = "../" + configPath;
     }

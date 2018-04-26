@@ -18,7 +18,7 @@ const getVersion_1 = require("./getVersion");
 const ora = require("ora");
 const install_1 = require("./install");
 program
-    .version("3.3.0")
+    .version("3.4.0")
     .option("-s, --save", "get typescript definitions and save as dependency")
     .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
     .parse(process.argv);
@@ -48,7 +48,7 @@ function tyty(saveAs) {
         const spinner = ora({ spinner: "moon" }).start();
         spinner.text = `${blue("start to get")} ${yellow(allTypes.length.toString())} ${blue("typescript definitions")} ...`;
         if (types.length === 0) {
-            spinner.succeed(`${green("already done")}`);
+            spinner.succeed(`${green("All installed already")}`);
             spinner.stop();
             return;
         }
@@ -72,7 +72,7 @@ function tyty(saveAs) {
             config[saveAs][t.name] = t.version;
         }
         yield fs.outputJson(configPath, config);
-        spinner.text = `downloading ${succeedTypeInfos.length} typescript definitions ...`;
+        spinner.text = `Installing ${succeedTypeInfos.length} typescript definitions ...`;
         if (succeedTypeInfos.length > 0) {
             yield install_1.npmInstall();
         }
