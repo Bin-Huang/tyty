@@ -45,7 +45,7 @@ async function tyty(saveAs: "dependencies" | "devDependencies") {
     spinner.text = `${blue("start to get")} ${yellow(allTypes.length.toString())} ${blue("typescript definitions")} ...`
 
     if (types.length === 0) {
-      spinner.succeed(`${green("already done")}`)
+      spinner.succeed(`${green("All installed already")}`)
       spinner.stop();
       return ;
     }
@@ -71,7 +71,7 @@ async function tyty(saveAs: "dependencies" | "devDependencies") {
 
     await fs.outputJson(configPath, config);
 
-    spinner.text = `downloading ${succeedTypeInfos.length} typescript definitions ...`
+    spinner.text = `Installing ${succeedTypeInfos.length} typescript definitions ...`
 
     if (succeedTypeInfos.length > 0) {
       await npmInstall();
