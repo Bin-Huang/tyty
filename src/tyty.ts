@@ -69,7 +69,7 @@ async function tyty(saveAs: "dependencies" | "devDependencies") {
       config[saveAs][t.name] = t.version;
     }
 
-    await fs.outputJson(configPath, config);
+    await fs.outputJson(configPath, config, { spaces: 2 });
 
     spinner.text = `Installing ${succeedTypeInfos.length} typescript definitions ...`
 

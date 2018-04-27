@@ -71,7 +71,7 @@ function tyty(saveAs) {
         for (const t of succeedTypeInfos) {
             config[saveAs][t.name] = t.version;
         }
-        yield fs.outputJson(configPath, config);
+        yield fs.outputJson(configPath, config, { spaces: 2 });
         spinner.text = `Installing ${succeedTypeInfos.length} typescript definitions ...`;
         if (succeedTypeInfos.length > 0) {
             yield install_1.npmInstall();
