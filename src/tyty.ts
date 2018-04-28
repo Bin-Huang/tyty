@@ -11,7 +11,7 @@ import * as ora from 'ora'
 import { npmInstall } from "./install";
 
 program
-  .version("3.4.0")
+  .version("3.4.1")
   .option("-s, --save", "get typescript definitions and save as dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
   .parse(process.argv);

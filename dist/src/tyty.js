@@ -18,7 +18,7 @@ const getVersion_1 = require("./getVersion");
 const ora = require("ora");
 const install_1 = require("./install");
 program
-    .version("3.4.0")
+    .version("3.4.1")
     .option("-s, --save", "get typescript definitions and save as dependency")
     .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
     .parse(process.argv);
