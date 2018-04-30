@@ -40,9 +40,13 @@ function tyty(saveAs) {
     return __awaiter(this, void 0, void 0, function* () {
         const configPath = find_1.default();
         const config = yield fs.readJSON(configPath);
-        const dependencies = config["dependencies"] || {};
-        const devDependencies = config["devDependencies"] || {};
-        const allPkgs = Object.keys(dependencies).filter((pkg) => !pkg.startsWith("@types/"));
+        if (!config["dependencies"]) {
+            config["dependencies"] = {};
+        }
+        if (!config["devDependencies"]) {
+            config["devDependencies"] = {};
+        }
+        const allPkgs = Object.keys(config["dependencies"]).filter((pkg) => !pkg.startsWith("@types/"));
         const allTypes = allPkgs.map((pkg) => `@types/${pkg}`);
         const types = allTypes.filter((t) => !config[saveAs][t]);
         const spinner = ora({ spinner: "moon" }).start();

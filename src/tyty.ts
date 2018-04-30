@@ -33,10 +33,15 @@ const gray = chalk.gray;
 async function tyty(saveAs: "dependencies" | "devDependencies") {
     const configPath = findPackageJson();
     const config = await fs.readJSON(configPath);
-    const dependencies = config["dependencies"] || {};
-    const devDependencies = config["devDependencies"] || {};
 
-    const allPkgs = Object.keys(dependencies).filter((pkg) => ! pkg.startsWith("@types/"))
+    if (! config["dependencies"]) {
+      config["dependencies"] = {}
+    }
+    if (! config["devDependencies"]) {
+      config["devDependencies"] = {}
+    }
+
+    const allPkgs = Object.keys(config["dependencies"]).filter((pkg) => ! pkg.startsWith("@types/"))
     const allTypes = allPkgs.map((pkg) => `@types/${pkg}`);
 
     const types = allTypes.filter((t) => ! config[saveAs][t])
