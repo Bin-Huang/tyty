@@ -21,22 +21,31 @@ program
     .version("3.4.2")
     .option("-s, --save", "get typescript definitions and save as dependency")
     .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
+    .option("-n --npm", "(default) install by npm")
+    .option("-y --yarn", "install by yarn")
     .parse(process.argv);
-if (program.saveDev) {
-    tyty("devDependencies").catch(console.log);
-}
-else if (program.save) {
-    tyty("dependencies").catch(console.log);
+if (program.save) {
+    if (program.yarn) {
+        tyty("dependencies", 'yarn').catch(console.log);
+    }
+    else {
+        tyty("dependencies", 'npm').catch(console.log);
+    }
 }
 else {
-    tyty("devDependencies").catch(console.log);
+    if (program.yarn) {
+        tyty("devDependencies", 'yarn').catch(console.log);
+    }
+    else {
+        tyty("devDependencies", 'npm').catch(console.log);
+    }
 }
 const blue = chalk_1.default.blueBright;
 const yellow = chalk_1.default.yellow;
 const green = chalk_1.default.green;
 const red = chalk_1.default.red;
 const gray = chalk_1.default.gray;
-function tyty(saveAs) {
+function tyty(saveAs = 'devDependencies', by = "npm") {
     return __awaiter(this, void 0, void 0, function* () {
         const configPath = find_1.default();
         const config = yield fs.readJSON(configPath);
@@ -78,7 +87,7 @@ function tyty(saveAs) {
         yield fs.outputJson(configPath, config, { spaces: 2 });
         spinner.text = `Installing ${succeedTypeInfos.length} typescript definitions ...`;
         if (succeedTypeInfos.length > 0) {
-            yield install_1.npmInstall();
+            yield install_1.install(by);
         }
         getResults(failedTypeInfos.map((t) => t.name), false, saveAs).map((r) => spinner.fail(r));
         getResults(allTypes.filter((t) => config[saveAs][t]), true, saveAs).map((r) => spinner.succeed(r));

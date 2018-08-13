@@ -17,10 +17,13 @@ If package.json not in current folder, `tyty` will try to find it in superior fo
 
   Options:
 
-    -V, --version   output the version number
-    -s, --save      get typescript definitions and add to package.json as a dependency
-    -d, --save-dev  (default) get typescript definitions and add to package.json as a dev-dependency
     -h, --help      output usage information
+    -V, --version   output the version number
+
+    -d, --save-dev  (default) install typescript definitions as dev-dependency
+    -s, --save      install typescript definitions as dependency
+    -n --npm        (default) install by npm
+    -y --yarn       install by yarn
 ```
 
 # Contributes
@@ -29,5 +32,4 @@ If package.json not in current folder, `tyty` will try to find it in superior fo
 - share the tool with friends and colleagues
 
 # Todo
-- add `-y, --yarn` option. (use `yarn` instead of `npm` to download)
 - add `-c, --cnpm` option. (use `cnpm` instead of `npm` to download)

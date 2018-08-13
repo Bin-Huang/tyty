@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa = require("execa");
-function npmInstall() {
+function install(by = 'npm') {
     return __awaiter(this, void 0, void 0, function* () {
-        yield execa("npm", ["install"]);
+        yield execa(by, ["install"]);
     });
 }
-exports.npmInstall = npmInstall;
+exports.install = install;

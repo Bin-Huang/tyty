@@ -8,20 +8,28 @@ import * as program from 'commander'
 import findPackageJson from './find'
 import getVersion from './getVersion'
 import * as ora from 'ora'
-import { npmInstall } from "./install";
+import { install } from "./install";
 
 program
   .version("3.4.2")
   .option("-s, --save", "get typescript definitions and save as dependency")
   .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
+  .option("-n --npm", "(default) install by npm")
+  .option("-y --yarn", "install by yarn")
   .parse(process.argv);
 
-if (program.saveDev) {
-    tyty("devDependencies").catch(console.log);
-} else if (program.save) {
-    tyty("dependencies").catch(console.log);
+if (program.save) {
+  if (program.yarn) {
+    tyty("dependencies", 'yarn').catch(console.log);
+  } else {
+    tyty("dependencies", 'npm').catch(console.log);
+  }
 } else {
-    tyty("devDependencies").catch(console.log);
+  if (program.yarn) {
+    tyty("devDependencies", 'yarn').catch(console.log);
+  } else {
+    tyty("devDependencies", 'npm').catch(console.log);
+  }
 }
 
 const blue = chalk.blueBright;
@@ -30,7 +38,10 @@ const green = chalk.green;
 const red = chalk.red;
 const gray = chalk.gray;
 
-async function tyty(saveAs: "dependencies" | "devDependencies") {
+async function tyty(
+  saveAs: "dependencies" | "devDependencies" = 'devDependencies',
+  by: "yarn" | "npm" = "npm",
+) {
     const configPath = findPackageJson();
     const config = await fs.readJSON(configPath);
 
@@ -79,7 +90,7 @@ async function tyty(saveAs: "dependencies" | "devDependencies") {
     spinner.text = `Installing ${succeedTypeInfos.length} typescript definitions ...`
 
     if (succeedTypeInfos.length > 0) {
-      await npmInstall();
+      await install(by);
     }
 
     getResults(failedTypeInfos.map((t) => t.name), false, saveAs).map((r) => spinner.fail(r))
