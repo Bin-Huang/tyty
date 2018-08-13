@@ -12,8 +12,8 @@ import { install } from "./install";
 
 program
   .version("3.4.2")
-  .option("-s, --save", "get typescript definitions and save as dependency")
-  .option("-d, --save-dev", "(default) get typescript definitions and save as dev-dependency")
+  .option("-s, --save", "save as dependency")
+  .option("-d, --save-dev", "(default) save as dev-dependency")
   .option("-n --npm", "(default) install by npm")
   .option("-y --yarn", "install by yarn")
   .parse(process.argv);

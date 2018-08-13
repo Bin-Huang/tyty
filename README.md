@@ -20,8 +20,8 @@ If package.json not in current folder, `tyty` will try to find it in superior fo
     -h, --help      output usage information
     -V, --version   output the version number
 
-    -d, --save-dev  (default) install typescript definitions as dev-dependency
-    -s, --save      install typescript definitions as dependency
+    -d, --save-dev  (default) save as dev-dependency
+    -s, --save      save as dependency
     -n --npm        (default) install by npm
     -y --yarn       install by yarn
 ```
