@@ -18,7 +18,7 @@ const getVersion_1 = require("./getVersion");
 const ora = require("ora");
 const install_1 = require("./install");
 program
-    .version("3.4.2")
+    .version("3.5.2")
     .option("-s, --save", "save as dependency")
     .option("-d, --save-dev", "(default) save as dev-dependency")
     .option("-n --npm", "(default) install by npm")

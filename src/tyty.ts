@@ -11,7 +11,7 @@ import * as ora from 'ora'
 import { install } from "./install";
 
 program
-  .version("3.4.2")
+  .version("3.5.2")
   .option("-s, --save", "save as dependency")
   .option("-d, --save-dev", "(default) save as dev-dependency")
   .option("-n --npm", "(default) install by npm")
