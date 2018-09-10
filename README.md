@@ -1,6 +1,6 @@
 :star2: A cli tool to get all of type definitions(`@types/*`) for your project dependencies. Happier with `typescript` :heart:
 
-![](https://raw.githubusercontent.com/Bin-Huang/tyty/master/image/example.PNG)
+![](https://raw.githubusercontent.com/Bin-Huang/tyty/master/image/tyty.gif)
 
 ```
 npm i tyty -g
